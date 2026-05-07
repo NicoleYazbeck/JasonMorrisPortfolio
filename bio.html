@@ -8,10 +8,21 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
-body,h1 {font-family: "Times New Roman", Times, serif;}
+body, h1 { font-family: "Times New Roman", Times, serif; }
+
 .bio-container {
   max-width: 800px;
   margin: auto;
+}
+
+/* FIX 1: Moved from invalid <css> block into <style>. Fixed max-width from 100px to 400px. */
+.bio-image {
+  width: 50%;
+  max-width: 400px;
+  height: auto;
+  display: block;
+  margin: auto;
+  padding: 20px;
 }
 </style>
 </head>
@@ -34,47 +45,50 @@ body,h1 {font-family: "Times New Roman", Times, serif;}
 <!-- Page Content -->
 <div class="w3-content" style="max-width:1500px">
 
-<!-- Header -->
-<div class="w3-opacity">
-<span class="w3-button w3-xxlarge w3-white w3-right" onclick="w3_open()"><i class="fa fa-bars"></i></span> 
-<div class="w3-clear"></div>
-<header class="w3-center w3-margin-bottom">
-   <img src="Photos/JasonMorris.PNG" style="width:50%;">
-</header>
+  <!-- Header -->
+  <div class="w3-opacity">
+    <span class="w3-button w3-xxlarge w3-white w3-right" onclick="w3_open()"><i class="fa fa-bars"></i></span>
+    <div class="w3-clear"></div>
+    <header class="w3-center w3-margin-bottom">
+      <img src="Photos/JasonMorris.PNG" style="width:50%;">
+    </header>
+  </div>
+
+  <!-- Bio Section -->
+  <div class="bio-container w3-padding-32 w3-center">
+    <!-- FIX 2: Added .bio-image class so CSS applies; removed broken inline style -->
+    <img src="Photos/IMG_4380.JPG" class="bio-image">
+    <div style="
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      line-height: 1.8;
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+    ">
+      <p>Jason Morris Jr. is a visual artist whose work spans photography and multiple forms of creative expression. His art is driven by emotion, curiosity, and a desire to capture the world in a way that feels honest, intentional, and meaningful.</p>
+      <p>He focuses on creating pieces that reflect both personal perspective and shared human experience—turning everyday moments, travel, and imagination into visuals that tell a story beyond what's immediately seen.</p>
+      <p>As an artist, Jason is continuously evolving his style and voice, with a strong focus on growth, discipline, and originality. His goal is not just to create art, but to build a body of work that resonates, lasts, and stands for something deeper.</p>
+      <p>Ultimately, he aims to leave a lasting mark on the world through his creativity—producing work that inspires, challenges perspective, and outlives the moment it was made in.</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="w3-container w3-padding-64 w3-light-grey w3-center w3-opacity w3-xlarge" style="margin-top:128px"></footer>
+
 </div>
 
-<!-- Bio Section -->
-<div class="bio-container w3-padding-32 w3-center">
-  <img src="Photos/IMG_4380.JPG" style="width:30%">
-  <img src="Photos/bio-text.jpg" sytle="width:30%">
-</div>
-
-<!-- Footer -->
-<footer class="w3-container w3-padding-64 w3-light-grey w3-center w3-opacity w3-xlarge" style="margin-top:128px"> 
-
-</footer>
- 
 <script>
 function w3_open() {
   document.getElementById("mySidebar").style.width = "100%";
   document.getElementById("mySidebar").style.display = "block";
 }
-
 function w3_close() {
   document.getElementById("mySidebar").style.display = "none";
 }
 </script>
-
-<css>
-  .bio-image {
-  width: 50%;
-  max-width: 100px;
-  height: auto;
-  display: block;
-  margin: auto;
-  padding: 20px;
-}
-</css>
 
 </body>
 </html>
