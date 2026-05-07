@@ -1,1 +1,401 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Jason Morris - Photos</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,600">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
+  body {
+    font-family: "Montserrat", sans-serif;
+    background: #0a0a0a;
+    color: #e8e4de;
+    min-height: 100vh;
+  }
+
+  /* Sidebar */
+  #mySidebar {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: #000;
+    z-index: 9999;
+    padding-top: 120px;
+  }
+  .sidebar-close {
+    position: absolute;
+    top: 20px; right: 28px;
+    font-size: 2rem;
+    color: #888;
+    cursor: pointer;
+    background: none;
+    border: none;
+  }
+  .sidebar-close:hover { color: #fff; }
+  .nav-links { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .nav-links a {
+    font-family: "Montserrat", sans-serif;
+    font-size: 1.6rem;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #666;
+    text-decoration: none;
+    padding: 10px 40px;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: #fff; }
+
+  /* Top Bar */
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 60px;
+    background: rgba(10,10,10,0.95);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    z-index: 100;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .topbar img { height: 36px; width: auto; filter: invert(1); opacity: 0.85; }
+  .menu-btn {
+    background: none;
+    border: none;
+    color: #e8e4de;
+    font-size: 1.4rem;
+    cursor: pointer;
+    padding: 8px;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+  .menu-btn:hover { opacity: 1; }
+
+  /* Page layout */
+  .page-wrap {
+    padding-top: 60px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Header title */
+  .gallery-header {
+    text-align: center;
+    padding: 48px 24px 32px;
+  }
+  .gallery-header img {
+    max-width: 320px;
+    width: 60%;
+    filter: invert(1);
+    opacity: 0.9;
+  }
+
+  /* Main slideshow */
+  .slideshow-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 24px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  /* Main image stage */
+  .main-stage {
+    position: relative;
+    width: 100%;
+    background: #111;
+    border: 1px solid rgba(255,255,255,0.07);
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .main-stage::before {
+    content: '';
+    display: block;
+    padding-top: 62%;
+  }
+  .main-img {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: contain;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  .main-img.visible { opacity: 1; }
+
+  /* Prev / Next arrows */
+  .arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.55);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #fff;
+    font-size: 1.1rem;
+    width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: background 0.2s, border-color 0.2s;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .main-stage:hover .arrow { opacity: 1; }
+  .arrow:hover { background: rgba(0,0,0,0.85); border-color: rgba(255,255,255,0.3); }
+  .arrow-left { left: 16px; }
+  .arrow-right { right: 16px; }
+
+  /* Photo counter */
+  .photo-counter {
+    position: absolute;
+    bottom: 14px;
+    right: 18px;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.4);
+    font-weight: 300;
+  }
+
+  /* Filmstrip */
+  .filmstrip-wrap {
+    width: 100%;
+    margin-top: 12px;
+    position: relative;
+  }
+  .filmstrip {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 4px 2px 8px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.15) transparent;
+  }
+  .filmstrip::-webkit-scrollbar { height: 3px; }
+  .filmstrip::-webkit-scrollbar-track { background: transparent; }
+  .filmstrip::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+
+  .thumb {
+    flex-shrink: 0;
+    width: 80px;
+    height: 56px;
+    object-fit: cover;
+    cursor: pointer;
+    opacity: 0.4;
+    border: 1px solid transparent;
+    transition: opacity 0.2s, border-color 0.2s, transform 0.15s;
+  }
+  .thumb:hover { opacity: 0.75; transform: translateY(-1px); }
+  .thumb.active {
+    opacity: 1;
+    border-color: rgba(255,255,255,0.55);
+  }
+
+  /* Lightbox fullscreen */
+  .lightbox {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.95);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img {
+    max-width: 92vw;
+    max-height: 92vh;
+    object-fit: contain;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 20px; right: 28px;
+    font-size: 1.8rem;
+    color: #aaa;
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition: color 0.2s;
+  }
+  .lightbox-close:hover { color: #fff; }
+  .lightbox .arrow { opacity: 1; position: absolute; }
+  .lightbox .arrow-left { left: 20px; }
+  .lightbox .arrow-right { right: 20px; }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 48px 24px;
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.2);
+  }
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<nav id="mySidebar">
+  <button class="sidebar-close" onclick="w3_close()"><i class="fa fa-times"></i></button>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="bio.html">Bio</a>
+    <a href="photos.html">Photos</a>
+    <a href="videos.html">Videos</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</nav>
+
+<!-- Top Bar -->
+<div class="topbar">
+  <img src="Photos/JasonMorris.PNG" alt="Jason Morris Jr.">
+  <button class="menu-btn" onclick="w3_open()"><i class="fa fa-bars"></i></button>
+</div>
+
+<!-- Page -->
+<div class="page-wrap">
+
+  <!-- Header -->
+  <div class="gallery-header">
+    <img src="Photos/portfolio.jpg" alt="Portfolio">
+  </div>
+
+  <!-- Slideshow -->
+  <div class="slideshow-wrap">
+
+    <!-- Main Stage -->
+    <div class="main-stage" onclick="openLightbox()">
+      <img class="main-img visible" id="mainImg" src="Photos/IMG_0006.jpeg" alt="">
+      <button class="arrow arrow-left" onclick="event.stopPropagation(); changeSlide(-1)"><i class="fa fa-chevron-left"></i></button>
+      <button class="arrow arrow-right" onclick="event.stopPropagation(); changeSlide(1)"><i class="fa fa-chevron-right"></i></button>
+      <span class="photo-counter" id="counter">1 / 18</span>
+    </div>
+
+    <!-- Filmstrip -->
+    <div class="filmstrip-wrap">
+      <div class="filmstrip" id="filmstrip"></div>
+    </div>
+
+  </div>
+
+  <footer>Jason Morris Jr. &nbsp;&mdash;&nbsp; Photography</footer>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" onclick="closeLightbox()"><i class="fa fa-times"></i></button>
+  <button class="arrow arrow-left" onclick="changeSlide(-1)"><i class="fa fa-chevron-left"></i></button>
+  <img id="lightboxImg" src="" alt="">
+  <button class="arrow arrow-right" onclick="changeSlide(1)"><i class="fa fa-chevron-right"></i></button>
+</div>
+
+<script>
+  const photos = [
+    "Photos/IMG_0006.jpeg",
+    "Photos/IMG_0009.jpeg",
+    "Photos/IMG_0013.jpeg",
+    "Photos/IMG_0015.jpeg",
+    "Photos/IMG_0143.JPG",
+    "Photos/IMG_0145.JPG",
+    "Photos/IMG_0017.jpeg",
+    "Photos/IMG_0019.jpeg",
+    "Photos/IMG_0029.jpeg",
+    "Photos/IMG_0050.jpeg",
+    "Photos/IMG_5641.JPG",
+    "Photos/IMG_5643.JPG",
+    "Photos/IMG_0093.jpeg",
+    "Photos/IMG_0095.jpeg",
+    "Photos/IMG_0099.jpeg",
+    "Photos/IMG_0100.jpeg",
+    "Photos/IMG_5645.JPG",
+    "Photos/IMG_5646.JPG"
+  ];
+
+  let current = 0;
+
+  const mainImg = document.getElementById("mainImg");
+  const lightboxImg = document.getElementById("lightboxImg");
+  const counter = document.getElementById("counter");
+  const filmstrip = document.getElementById("filmstrip");
+
+  // Build filmstrip
+  photos.forEach((src, i) => {
+    const img = document.createElement("img");
+    img.src = src;
+    img.className = "thumb" + (i === 0 ? " active" : "");
+    img.alt = "";
+    img.onclick = () => goTo(i);
+    filmstrip.appendChild(img);
+  });
+
+  function goTo(index) {
+    current = (index + photos.length) % photos.length;
+
+    // Crossfade main image
+    mainImg.classList.remove("visible");
+    setTimeout(() => {
+      mainImg.src = photos[current];
+      mainImg.onload = () => mainImg.classList.add("visible");
+    }, 200);
+
+    // Update lightbox
+    lightboxImg.src = photos[current];
+
+    // Update counter
+    counter.textContent = (current + 1) + " / " + photos.length;
+
+    // Update filmstrip active
+    const thumbs = filmstrip.querySelectorAll(".thumb");
+    thumbs.forEach((t, i) => t.classList.toggle("active", i === current));
+
+    // Scroll active thumb into view
+    thumbs[current].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+  }
+
+  function changeSlide(dir) {
+    goTo(current + dir);
+  }
+
+  function openLightbox() {
+    lightboxImg.src = photos[current];
+    document.getElementById("lightbox").classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeLightbox() {
+    document.getElementById("lightbox").classList.remove("open");
+    document.body.style.overflow = "";
+  }
+
+  // Keyboard navigation
+  document.addEventListener("keydown", e => {
+    if (e.key === "ArrowRight") changeSlide(1);
+    if (e.key === "ArrowLeft") changeSlide(-1);
+    if (e.key === "Escape") closeLightbox();
+  });
+
+  // Sidebar
+  function w3_open() {
+    document.getElementById("mySidebar").style.display = "block";
+  }
+  function w3_close() {
+    document.getElementById("mySidebar").style.display = "none";
+  }
+</script>
+</body>
+</html>
