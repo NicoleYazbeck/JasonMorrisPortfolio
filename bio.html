@@ -15,14 +15,46 @@ body, h1 { font-family: "Times New Roman", Times, serif; }
   margin: auto;
 }
 
-/* FIX 1: Moved from invalid <css> block into <style>. Fixed max-width from 100px to 400px. */
+.bio-image-wrapper {
+  display: inline-block;
+  margin: 0 auto 48px auto;
+  position: relative;
+  /* Outer frame border */
+  border: 2px solid #b8a98a;
+  padding: 14px;
+  background: #f9f6f1;
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.10),
+    0 16px 40px rgba(0,0,0,0.14),
+    0 32px 64px rgba(0,0,0,0.08);
+}
+
+/* Inner mat border */
+.bio-image-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px solid #c9b99a;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Subtle corner ornaments */
+.bio-image-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 1px solid rgba(184,169,138,0.4);
+  pointer-events: none;
+}
+
 .bio-image {
-  width: 50%;
-  max-width: 400px;
+  width: 100%;
+  max-width: 320px;
   height: auto;
   display: block;
-  margin: auto;
-  padding: 20px;
+  position: relative;
+  z-index: 0;
 }
 </style>
 </head>
@@ -56,8 +88,9 @@ body, h1 { font-family: "Times New Roman", Times, serif; }
 
   <!-- Bio Section -->
   <div class="bio-container w3-padding-32 w3-center">
-    <!-- FIX 2: Added .bio-image class so CSS applies; removed broken inline style -->
-    <img src="Photos/IMG_4380.JPG" class="bio-image">
+    <div class="bio-image-wrapper">
+      <img src="Photos/IMG_4380.JPG" class="bio-image">
+    </div>
     <div style="
       font-family: 'Montserrat', sans-serif;
       font-size: 1rem;
@@ -92,3 +125,4 @@ function w3_close() {
 
 </body>
 </html>
+
