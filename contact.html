@@ -1,1 +1,347 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Jason Morris Jr. — Contact</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@200;300;400;500&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+  :root {
+    --bg: #ffffff;
+    --surface: #f9f7f4;
+    --border: rgba(0,0,0,0.09);
+    --gold: #9a7e55;
+    --gold-dim: rgba(154,126,85,0.3);
+    --text: #1a1814;
+    --text-dim: rgba(26,24,20,0.5);
+    --text-muted: rgba(26,24,20,0.28);
+  }
+
+  html, body { height: 100%; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Montserrat", sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Sidebar */
+  #mySidebar {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #000;
+    z-index: 9999;
+    padding-top: 120px;
+  }
+  .sidebar-close {
+    position: absolute;
+    top: 22px; right: 28px;
+    font-size: 1.6rem;
+    color: #555;
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition: color 0.2s;
+  }
+  .sidebar-close:hover { color: #fff; }
+  .nav-links { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .nav-links a {
+    font-family: "Montserrat", sans-serif;
+    font-size: 1.5rem;
+    font-weight: 200;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #555;
+    text-decoration: none;
+    padding: 12px 48px;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+  /* Topbar */
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 58px;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    z-index: 100;
+    border-bottom: 1px solid var(--border);
+  }
+  .topbar img { height: 34px; width: auto; opacity: 0.85; }
+  .menu-btn {
+    background: none; border: none;
+    color: var(--text); font-size: 1.2rem;
+    cursor: pointer; opacity: 0.6;
+    transition: opacity 0.2s; padding: 8px;
+  }
+  .menu-btn:hover { opacity: 1; }
+
+  /* Page */
+  .page {
+    position: relative;
+    z-index: 1;
+    padding-top: 58px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Hero section */
+  .hero {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 24px 60px;
+    text-align: center;
+  }
+
+  .eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.05;
+    color: var(--text);
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.35s forwards;
+  }
+
+  .hero-sub {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 72px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.5s forwards;
+  }
+
+  /* Contact cards */
+  .contact-cards {
+    display: flex;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.65s forwards;
+  }
+
+  .contact-card {
+    flex: 1;
+    background: var(--surface);
+    padding: 40px 36px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--text);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    min-width: 160px;
+  }
+
+  .contact-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+  .contact-card:hover::before { transform: scaleX(1); }
+  .contact-card:hover { background: #1a1814; }
+
+  .card-icon {
+    width: 48px; height: 48px;
+    border: 1px solid var(--gold-dim);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: var(--gold);
+    transition: border-color 0.3s, color 0.3s;
+  }
+  .contact-card:hover .card-icon {
+    border-color: var(--gold);
+  }
+
+  .card-platform {
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .card-handle {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 1.05rem;
+    font-weight: 400;
+    color: var(--text);
+    letter-spacing: 0.05em;
+  }
+
+  .card-cta {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    transition: color 0.3s;
+    margin-top: 4px;
+  }
+  .contact-card:hover .card-cta { color: var(--gold); }
+
+  /* Divider line */
+  .divider {
+    width: 1px;
+    background: var(--border);
+  }
+
+  /* Footer line */
+  .footer-line {
+    padding: 40px 24px;
+    text-align: center;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+  }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .contact-cards {
+      flex-direction: column;
+      gap: 1px;
+    }
+    .hero-title { font-size: 3.2rem; }
+    .contact-card { padding: 32px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<nav id="mySidebar">
+  <button class="sidebar-close" onclick="w3_close()"><i class="fa fa-times"></i></button>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="bio.html">Bio</a>
+    <a href="photos.html">Photos</a>
+    <a href="videos.html">Videos</a>
+    <a href="contact.html" class="active">Contact</a>
+  </div>
+</nav>
+
+<!-- Topbar -->
+<div class="topbar">
+  <img src="Photos/JasonMorris.PNG" alt="Jason Morris Jr.">
+  <button class="menu-btn" onclick="w3_open()"><i class="fa fa-bars"></i></button>
+</div>
+
+<!-- Page -->
+<div class="page">
+  <div class="hero">
+
+    <p class="eyebrow">Get in touch</p>
+    <h1 class="hero-title">Let's connect.</h1>
+    <p class="hero-sub">Follow the work &nbsp;&mdash;&nbsp; reach out directly</p>
+
+    <div class="contact-cards">
+
+      <!-- Instagram -->
+      <a class="contact-card" href="https://instagram.com/YOUR_HANDLE" target="_blank" rel="noopener">
+        <div class="card-icon"><i class="fa fa-instagram"></i></div>
+        <span class="card-platform">Instagram</span>
+        <span class="card-handle">@your_handle</span>
+        <span class="card-cta">Follow ↗</span>
+      </a>
+
+      <div class="divider"></div>
+
+      <!-- TikTok -->
+      <a class="contact-card" href="https://tiktok.com/@YOUR_HANDLE" target="_blank" rel="noopener">
+        <div class="card-icon">
+          <!-- TikTok icon via SVG since FA4 lacks it -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/>
+          </svg>
+        </div>
+        <span class="card-platform">TikTok</span>
+        <span class="card-handle">@your_handle</span>
+        <span class="card-cta">Follow ↗</span>
+      </a>
+
+      <div class="divider"></div>
+
+      <!-- Email -->
+      <a class="contact-card" href="mailto:your@email.com">
+        <div class="card-icon"><i class="fa fa-envelope-o"></i></div>
+        <span class="card-platform">Email</span>
+        <span class="card-handle">your@email.com</span>
+        <span class="card-cta">Send a message ↗</span>
+      </a>
+
+    </div>
+  </div>
+
+  <div class="footer-line">Jason Morris Jr. &nbsp;&mdash;&nbsp; Visual Artist</div>
+</div>
+
+<script>
+  function w3_open() {
+    document.getElementById("mySidebar").style.display = "block";
+  }
+  function w3_close() {
+    document.getElementById("mySidebar").style.display = "none";
+  }
+</script>
+</body>
+</html>
