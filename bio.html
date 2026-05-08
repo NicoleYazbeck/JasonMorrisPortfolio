@@ -56,23 +56,89 @@ body, h1 { font-family: "Times New Roman", Times, serif; }
   position: relative;
   z-index: 0;
 }
+
+ /* Sidebar */
+  #mySidebar {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: #000;
+    z-index: 9999;
+    padding-top: 120px;
+  }
+  .sidebar-close {
+    position: absolute;
+    top: 20px; right: 28px;
+    font-size: 2rem;
+    color: #888;
+    cursor: pointer;
+    background: none;
+    border: none;
+  }
+  .sidebar-close:hover { color: #fff; }
+  .nav-links { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .nav-links a {
+    font-family: "Montserrat", sans-serif;
+    font-size: 1.6rem;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #666;
+    text-decoration: none;
+    padding: 10px 40px;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: #fff; }
+
+  /* Top Bar */
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 60px;
+    background: white;
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    z-index: 100;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .topbar img { height: 36px; width: auto; opacity: 0.85; }
+  .menu-btn {
+    background: none;
+    border: none;
+    color: rgba(10, 10, 10, 0.45);
+    font-size: 1.4rem;
+    cursor: pointer;
+    padding: 8px;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+  .menu-btn:hover { opacity: 1; } 
 </style>
 </head>
 <body>
 
 <!-- Sidebar -->
-<nav class="w3-sidebar w3-black w3-animate-top w3-xxlarge" style="display:none;padding-top:150px;z-index:9999;width:100%;position:fixed;top:0;left:0;height:100%;overflow:auto;" id="mySidebar">
-  <a href="javascript:void(0)" onclick="w3_close()" class="w3-button w3-black w3-xxlarge w3-padding w3-display-topright" style="padding:6px 24px">
-    <i class="fa fa-remove"></i>
-  </a>
-  <div class="w3-bar-block w3-center">
-    <a href="index.html" class="w3-bar-item w3-button w3-text-grey w3-hover-black">Home</a>
-    <a href="bio.html" class="w3-bar-item w3-button w3-text-grey w3-hover-black">Bio</a>
-    <a href="photos.html" class="w3-bar-item w3-button w3-text-grey w3-hover-black">Photos</a>
-    <a href="videos.html" class="w3-bar-item w3-button w3-text-grey w3-hover-black">Videos</a>
-    <a href="contact.html" class="w3-bar-item w3-button w3-text-grey w3-hover-black">Contact</a>
+<nav id="mySidebar">
+  <button class="sidebar-close" onclick="w3_close()"><i class="fa fa-times"></i></button>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="bio.html">Bio</a>
+    <a href="photos.html">Photos</a>
+    <a href="videos.html">Videos</a>
+    <a href="contact.html">Contact</a>
   </div>
 </nav>
+
+<!-- Top Bar -->
+<div class="topbar">
+  <img src="Photos/JasonMorris.PNG" alt="Jason Morris Jr.">
+  <p class="navbar_details">Jason Morris Jr. &nbsp;&mdash;&nbsp; Visual Artist & Photographer</p>
+  <button class="menu-btn" onclick="w3_open()"><i class="fa fa-bars"></i></button>
+</div>
 
 <!-- Page Content -->
 <div class="w3-content" style="max-width:1500px">
